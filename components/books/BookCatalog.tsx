@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Book, BookCategory } from "@/lib/types";
 import { BookCard } from "@/components/books/BookCard";
 import { Search, SlidersHorizontal, RotateCcw, BookOpen, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { fetchBooks } from "@/lib/db/books";
 
 interface BookCatalogProps {
   initialBooks: Book[];
@@ -29,14 +30,33 @@ const CONDITIONS = [
 ];
 
 export function BookCatalog({ initialBooks }: BookCatalogProps) {
+  const [books, setBooks] = useState<Book[]>(initialBooks);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Novels");
   const [selectedCondition, setSelectedCondition] = useState("all");
   const [maxRent, setMaxRent] = useState<number>(60);
   const [showFiltersModal, setShowFiltersModal] = useState(false);
 
+  useEffect(() => {
+    setBooks(initialBooks);
+  }, [initialBooks]);
+
+  useEffect(() => {
+    async function loadLiveBooks() {
+      try {
+        const live = await fetchBooks({ status: "available" });
+        if (live) {
+          setBooks(live);
+        }
+      } catch (err) {
+        console.warn("Failed to load live books:", err);
+      }
+    }
+    loadLiveBooks();
+  }, []);
+
   const filteredBooks = useMemo(() => {
-    return initialBooks.filter((book) => {
+    return books.filter((book) => {
       // Category filter
       if (
         selectedCategory !== "All Novels" &&

@@ -192,7 +192,10 @@ export async function approveBookListing(bookId: string): Promise<boolean> {
 
   if (!isPlaceholder) {
     try {
-      await supabase.from("books").update({ status: "available" }).eq("id", bookId);
+      const { error } = await supabase.from("books").update({ status: "available" }).eq("id", bookId);
+      if (error) {
+        console.error("Error approving book in Supabase:", error);
+      }
     } catch (err) {
       console.warn(err);
     }

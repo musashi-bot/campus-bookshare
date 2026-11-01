@@ -7,6 +7,9 @@ import { Card } from "@/components/ui/Card";
 import { fetchBooks } from "@/lib/db/books";
 import { BookCatalog } from "@/components/books/BookCatalog";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const HOW_IT_WORKS_STEPS = [
   {
     step: "01",
