@@ -16,28 +16,12 @@ interface NotificationItem {
 const SAMPLE_NOTIFICATIONS: NotificationItem[] = [
   {
     id: "notif-1",
-    title: "Rental Request Accepted! 🎉",
-    message: "Your request for 'Norwegian Wood' was accepted by Rahul. Proceed to offline payment.",
-    time: "25 mins ago",
+    title: "",
+    message: "No new notifications",
+    time: "",
     read: false,
     link: "/dashboard",
-  },
-  {
-    id: "notif-2",
-    title: "Payment Confirmed by Admin",
-    message: "Your payment for 'Dune' was verified. Meet your campus peer to collect the book.",
-    time: "3 hours ago",
-    read: false,
-    link: "/dashboard",
-  },
-  {
-    id: "notif-3",
-    title: "Return Due in 3 Days",
-    message: "Your rental for 'Dune' is due on Nov 3. Remember to arrange the return.",
-    time: "Yesterday",
-    read: true,
-    link: "/dashboard",
-  },
+  }
 ];
 
 export function NotificationBell() {
@@ -91,9 +75,8 @@ export function NotificationBell() {
                   key={notif.id}
                   href={notif.link || "/dashboard"}
                   onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-3 hover:bg-paper-warm transition ${
-                    !notif.read ? "bg-amber/5" : ""
-                  }`}
+                  className={`block px-4 py-3 hover:bg-paper-warm transition ${!notif.read ? "bg-amber/5" : ""
+                    }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className={`text-xs ${!notif.read ? "font-bold text-ink" : "font-semibold text-charcoal/80"}`}>

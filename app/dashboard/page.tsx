@@ -57,9 +57,9 @@ export default function DashboardPage() {
         setProfile({
           id: userId,
           name: "Rahul Sharma",
-          email: "rahul@iitb.ac.in",
+          email: "rahul@iitp.ac.in",
           phone: "+91 9822233344",
-          college: "IIT Bombay",
+          college: "IIT Patna",
           role: "student",
           college_verified: true,
           created_at: new Date().toISOString(),
@@ -175,8 +175,8 @@ export default function DashboardPage() {
           <button
             onClick={() => setActiveTab("borrowed")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "borrowed"
-                ? "bg-ink text-white shadow-sm"
-                : "text-charcoal/70 hover:bg-paper-warm"
+              ? "bg-ink text-white shadow-sm"
+              : "text-charcoal/70 hover:bg-paper-warm"
               }`}
           >
             <span>Borrowed</span>
@@ -189,8 +189,8 @@ export default function DashboardPage() {
           <button
             onClick={() => setActiveTab("lent")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "lent"
-                ? "bg-ink text-white shadow-sm"
-                : "text-charcoal/70 hover:bg-paper-warm"
+              ? "bg-ink text-white shadow-sm"
+              : "text-charcoal/70 hover:bg-paper-warm"
               }`}
           >
             <span>Lent (Requests)</span>
@@ -203,8 +203,8 @@ export default function DashboardPage() {
           <button
             onClick={() => setActiveTab("listings")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "listings"
-                ? "bg-ink text-white shadow-sm"
-                : "text-charcoal/70 hover:bg-paper-warm"
+              ? "bg-ink text-white shadow-sm"
+              : "text-charcoal/70 hover:bg-paper-warm"
               }`}
           >
             <span>My Listings</span>
@@ -217,8 +217,8 @@ export default function DashboardPage() {
           <button
             onClick={() => setActiveTab("history")}
             className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "history"
-                ? "bg-ink text-white shadow-sm"
-                : "text-charcoal/70 hover:bg-paper-warm"
+              ? "bg-ink text-white shadow-sm"
+              : "text-charcoal/70 hover:bg-paper-warm"
               }`}
           >
             <span>History</span>
