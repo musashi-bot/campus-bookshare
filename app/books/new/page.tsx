@@ -184,7 +184,7 @@ export default function NewBookPage() {
       {/* Header */}
       <div className="space-y-1">
         <h1 className="font-heading font-black text-2xl sm:text-3xl md:text-4xl text-ink">
-          Lend a Novel
+          Lend a Book
         </h1>
         <p className="text-xs sm:text-sm text-charcoal/70">
           List your finished book so fellow students on campus can rent and enjoy it.
@@ -300,17 +300,15 @@ export default function NewBookPage() {
                   key={c.value}
                   type="button"
                   onClick={() => setCondition(c.value)}
-                  className={`p-3 rounded-xl border text-left transition ${
-                    condition === c.value
+                  className={`p-3 rounded-xl border text-left transition ${condition === c.value
                       ? "border-ink bg-ink text-white shadow-sm"
                       : "border-paper-border bg-paper-warm/50 text-charcoal hover:bg-paper-warm"
-                  }`}
+                    }`}
                 >
                   <p className="text-sm font-bold">{c.label}</p>
                   <p
-                    className={`text-[11px] mt-0.5 ${
-                      condition === c.value ? "text-white/80" : "text-charcoal/60"
-                    }`}
+                    className={`text-[11px] mt-0.5 ${condition === c.value ? "text-white/80" : "text-charcoal/60"
+                      }`}
                   >
                     {c.desc}
                   </p>
@@ -400,7 +398,7 @@ export default function NewBookPage() {
               className="w-full sm:w-auto min-h-[48px] font-bold"
               isLoading={submitting || uploadProgress}
             >
-              Submit Novel for Approval
+              Submit Book for Approval
             </Button>
           </div>
         </form>

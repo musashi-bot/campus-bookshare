@@ -104,7 +104,7 @@ export default function DashboardPage() {
             Student Dashboard
           </span>
           <h1 className="font-heading font-black text-2xl sm:text-3xl text-ink">
-            My Rentals & Novels
+            My Rentals & Book
           </h1>
           <p className="text-xs sm:text-sm text-charcoal/70">
             Welcome back, <span className="font-bold text-ink">{profile?.name}</span> ({profile?.college || "Campus"})
@@ -113,7 +113,7 @@ export default function DashboardPage() {
 
         <Link href="/books/new">
           <Button variant="accent" size="md" className="font-bold">
-            <PlusCircle className="w-4 h-4 mr-1.5" /> Lend Another Novel
+            <PlusCircle className="w-4 h-4 mr-1.5" /> Lend Another Book
           </Button>
         </Link>
       </div>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
             <div className="font-heading font-black text-2xl sm:text-3xl text-ink">
               {listings.length}
             </div>
-            <p className="text-[11px] text-charcoal/50">Novels shared with campus peers</p>
+            <p className="text-[11px] text-charcoal/50">Books shared with campus peers</p>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-ink/10 text-ink flex items-center justify-center shrink-0">
             <BookMarked className="w-6 h-6 text-ink" />
@@ -174,64 +174,56 @@ export default function DashboardPage() {
         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar border-b border-paper-border pb-1">
           <button
             onClick={() => setActiveTab("borrowed")}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "borrowed"
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "borrowed"
                 ? "bg-ink text-white shadow-sm"
                 : "text-charcoal/70 hover:bg-paper-warm"
-            }`}
+              }`}
           >
             <span>Borrowed</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-              activeTab === "borrowed" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
-            }`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === "borrowed" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
+              }`}>
               {borrowed.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("lent")}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "lent"
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "lent"
                 ? "bg-ink text-white shadow-sm"
                 : "text-charcoal/70 hover:bg-paper-warm"
-            }`}
+              }`}
           >
             <span>Lent (Requests)</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-              activeTab === "lent" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
-            }`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === "lent" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
+              }`}>
               {lent.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("listings")}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "listings"
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "listings"
                 ? "bg-ink text-white shadow-sm"
                 : "text-charcoal/70 hover:bg-paper-warm"
-            }`}
+              }`}
           >
             <span>My Listings</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-              activeTab === "listings" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
-            }`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === "listings" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
+              }`}>
               {listings.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab("history")}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "history"
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 whitespace-nowrap ${activeTab === "history"
                 ? "bg-ink text-white shadow-sm"
                 : "text-charcoal/70 hover:bg-paper-warm"
-            }`}
+              }`}
           >
             <span>History</span>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
-              activeTab === "history" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
-            }`}>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === "history" ? "bg-amber text-ink" : "bg-paper-warm text-charcoal"
+              }`}>
               {history.length}
             </span>
           </button>
@@ -253,14 +245,14 @@ export default function DashboardPage() {
               <div className="text-center py-12 bg-white rounded-2xl border border-paper-border space-y-3 p-6">
                 <BookOpen className="w-10 h-10 text-charcoal/30 mx-auto" />
                 <h3 className="font-heading font-bold text-ink text-base">
-                  No active borrowed novels
+                  No active borrowed books
                 </h3>
                 <p className="text-xs text-charcoal/60 max-w-sm mx-auto">
                   Browse our campus catalog to discover bestsellers and request your next read.
                 </p>
                 <Link href="/">
                   <Button variant="accent" size="sm" className="font-bold">
-                    Browse Campus Novels
+                    Browse Campus Books
                   </Button>
                 </Link>
               </div>
@@ -338,14 +330,14 @@ export default function DashboardPage() {
               <div className="text-center py-12 bg-white rounded-2xl border border-paper-border space-y-3 p-6">
                 <BookOpen className="w-10 h-10 text-charcoal/30 mx-auto" />
                 <h3 className="font-heading font-bold text-ink text-base">
-                  You haven't listed any novels yet
+                  You haven't listed any books yet
                 </h3>
                 <p className="text-xs text-charcoal/60 max-w-sm mx-auto">
                   Earn pocket money by sharing books already on your bookshelf.
                 </p>
                 <Link href="/books/new">
                   <Button variant="accent" size="sm" className="font-bold">
-                    Lend Your First Novel
+                    Lend Your First Book
                   </Button>
                 </Link>
               </div>
