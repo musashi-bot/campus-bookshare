@@ -50,7 +50,7 @@ export async function fetchBooks(options: BookFilterOptions = {}): Promise<Book[
 
       const { data, error } = await dbQuery;
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         return data as Book[];
       }
     }
@@ -106,6 +106,9 @@ export async function fetchBookById(id: string): Promise<Book | null> {
 
       if (!error && data) {
         return data as Book;
+      }
+      if (error && (error.code === "PGRST116" || error.message.includes("0 rows"))) {
+        return null;
       }
     }
   } catch (err) {
@@ -240,4 +243,22 @@ export async function uploadBookCover(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+export async function deleteNovelListing(bookId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createClient();
+    // Delete any linked reviews or rentals first
+    await supabase.from("rentals").delete().eq("book_id", bookId);
+    await supabase.from("reviews").delete().eq("book_id", bookId);
+    const { error } = await supabase.from("books").delete().eq("id", bookId);
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    localAddedBooks = localAddedBooks.filter((b) => b.id !== bookId);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to delete novel" };
+  }
+}
+
 
