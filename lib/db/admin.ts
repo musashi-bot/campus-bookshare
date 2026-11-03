@@ -223,6 +223,25 @@ export async function rejectBookListing(bookId: string): Promise<boolean> {
 }
 
 export async function fetchAwaitingPayments(): Promise<Rental[]> {
+  const supabase = createClient();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  const isPlaceholder = supabaseUrl.includes("placeholder.supabase.co") || supabaseUrl.includes("xyzcompany");
+
+  if (!isPlaceholder) {
+    try {
+      const { data, error } = await supabase
+        .from("rentals")
+        .select("*, book:books(*), borrower:profiles!rentals_borrower_id_fkey(*), lender:profiles!rentals_lender_id_fkey(*)")
+        .or("payment_status.eq.awaiting_confirmation,status.eq.payment_pending")
+        .order("created_at", { ascending: false });
+
+      if (!error) return (data || []) as Rental[];
+      console.error("Error fetching awaiting payments from Supabase:", error);
+    } catch (err) {
+      console.warn("Supabase awaiting payments fallback:", err);
+    }
+  }
+
   return adminRentals.filter((r) => r.payment_status === "awaiting_confirmation" || r.status === "payment_pending");
 }
 
