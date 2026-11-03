@@ -216,7 +216,7 @@ export default function PaymentInstructionsPage() {
         </form>
 
         {/* Lender Contact Preview */}
-        {rental.lender && (
+        {rental.payment_status === "paid" && rental.lender && (
           <div className="p-3.5 bg-paper-warm/60 rounded-xl border border-paper-border text-xs text-charcoal/70 space-y-1">
             <span className="font-bold text-ink block">Lender Contact Coordination</span>
             <p>

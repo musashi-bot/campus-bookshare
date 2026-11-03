@@ -36,10 +36,7 @@ export function RentalCard({ rental, viewMode, onStatusChange }: RentalCardProps
   const book = rental.book;
   const otherPerson = viewMode === "borrowed" ? rental.lender : rental.borrower;
 
-  // Phone disclosure rule: "shown only after the lender accepts"
-  const canShowPhone = ["accepted", "payment_pending", "active", "returned", "overdue"].includes(
-    rental.status
-  );
+  const canShowLenderDetails = rental.payment_status === "paid";
 
   // Due date countdown logic
   const daysRemaining = rental.due_date ? getDaysRemaining(rental.due_date) : null;
@@ -123,24 +120,25 @@ export function RentalCard({ rental, viewMode, onStatusChange }: RentalCardProps
           <p className="text-xs text-charcoal/70">by {book?.author || "Author"}</p>
 
           {/* Other Person Contact Info */}
-          {otherPerson && (
+          {otherPerson && (viewMode !== "borrowed" || canShowLenderDetails) && (
             <div className="pt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-charcoal/70">
               <span className="flex items-center gap-1 font-semibold text-ink">
                 <User className="w-3.5 h-3.5 text-charcoal/40" />
                 <span>{viewMode === "borrowed" ? "Lender:" : "Borrower:"} {otherPerson.name}</span>
               </span>
 
-              {canShowPhone && otherPerson.phone ? (
+              {otherPerson.phone && (
                 <span className="flex items-center gap-1 text-teal font-bold bg-teal/10 px-2 py-0.5 rounded-lg text-[11px]">
                   <Phone className="w-3 h-3" />
                   <span>{otherPerson.phone}</span>
                 </span>
-              ) : (
-                <span className="text-[10px] text-charcoal/50 italic">
-                  (Phone shared once accepted)
-                </span>
               )}
             </div>
+          )}
+          {viewMode === "borrowed" && otherPerson && !canShowLenderDetails && (
+            <p className="pt-1.5 text-[10px] text-charcoal/50 italic">
+              Lender details will be shared once payment is verified.
+            </p>
           )}
         </div>
       </div>
