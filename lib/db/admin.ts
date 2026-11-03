@@ -248,9 +248,7 @@ export async function fetchAwaitingPayments(): Promise<Rental[]> {
 export async function confirmRentalPayment(rentalId: string): Promise<boolean> {
   const today = new Date().toISOString().split("T")[0];
 
-  const targetRental = adminRentals.find((r) => r.id === rentalId);
-  const weeks = targetRental?.weeks || 1;
-  const dueDate = calculateDueDate(today, weeks);
+  let targetRental = adminRentals.find((r) => r.id === rentalId);
 
   const supabase = createClient();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -258,7 +256,19 @@ export async function confirmRentalPayment(rentalId: string): Promise<boolean> {
 
   if (!isPlaceholder) {
     try {
-      await supabase
+      const { data: rentalData, error: rentalFetchError } = await supabase
+        .from("rentals")
+        .select("book_id, weeks")
+        .eq("id", rentalId)
+        .single();
+      if (rentalFetchError || !rentalData) {
+        console.error("Error loading rental for payment confirmation:", rentalFetchError);
+        return false;
+      }
+      targetRental = { ...(targetRental || {} as Rental), ...rentalData } as Rental;
+      const dueDate = calculateDueDate(today, rentalData.weeks || 1);
+
+      const { error: paymentUpdateError } = await supabase
         .from("rentals")
         .update({
           payment_status: "paid",
@@ -267,16 +277,45 @@ export async function confirmRentalPayment(rentalId: string): Promise<boolean> {
           due_date: dueDate,
         })
         .eq("id", rentalId);
+      if (paymentUpdateError) {
+        console.error("Error confirming rental payment:", paymentUpdateError);
+        return false;
+      }
 
       if (targetRental?.book_id) {
-        await supabase.from("books").update({ status: "rented" }).eq("id", targetRental.book_id);
+        const { error: bookUpdateError } = await supabase
+          .from("books")
+          .update({ status: "rented" })
+          .eq("id", targetRental.book_id);
+        if (bookUpdateError) {
+          console.error("Error marking book as rented:", bookUpdateError);
+          return false;
+        }
       }
     } catch (err) {
       console.warn(err);
+      return false;
     }
+  } else {
+    const dueDate = calculateDueDate(today, targetRental?.weeks || 1);
+
+    // Update in local state for demo mode.
+    adminRentals = adminRentals.map((r) =>
+      r.id === rentalId
+        ? { ...r, payment_status: "paid", status: "active", start_date: today, due_date: dueDate }
+        : r
+    );
+
+    if (targetRental?.book_id) {
+      adminBooks = adminBooks.map((b) =>
+        b.id === targetRental?.book_id ? { ...b, status: "rented" } : b
+      );
+    }
+    return true;
   }
 
   // Update in local state
+  const dueDate = calculateDueDate(today, targetRental?.weeks || 1);
   adminRentals = adminRentals.map((r) => {
     if (r.id === rentalId) {
       return {

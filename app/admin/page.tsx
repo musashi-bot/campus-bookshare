@@ -104,7 +104,11 @@ export default function AdminPage() {
   };
 
   const handleConfirmPayment = async (rentalId: string) => {
-    await confirmRentalPayment(rentalId);
+    const confirmed = await confirmRentalPayment(rentalId);
+    if (!confirmed) {
+      toast.error("Payment could not be confirmed. The rental and book status were not fully updated.");
+      return;
+    }
     toast.success("Payment confirmed! Book pickup unlocked & rental is now active.");
     loadAllAdminData();
   };
