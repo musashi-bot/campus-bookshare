@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Bell, Check, Clock, Sparkles, BookOpen, CreditCard } from "lucide-react";
+import { Bell, Check } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface NotificationItem {
   id: string;
@@ -13,24 +14,68 @@ interface NotificationItem {
   link?: string;
 }
 
-const SAMPLE_NOTIFICATIONS: NotificationItem[] = [
-  {
-    id: "notif-1",
-    title: "",
-    message: "No new notifications",
-    time: "",
-    read: false,
-    link: "/dashboard",
-  }
-];
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return days === 1 ? "Yesterday" : `${days} days ago`;
+}
 
 export function NotificationBell() {
-  const [notifications, setNotifications] = useState<NotificationItem[]>(SAMPLE_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadNotifications() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data } = await supabase
+          .from("notifications")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (data) {
+          setNotifications(
+            data.map((n: any) => ({
+              id: n.id,
+              title: n.title,
+              message: n.message,
+              time: timeAgo(n.created_at),
+              read: n.read,
+              link: n.link || "/dashboard",
+            }))
+          );
+        }
+      } catch {
+        // Silently ignore — bell shows empty if DB unavailable
+      }
+    }
+    loadNotifications();
+  }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const markAllAsRead = () => {
+  const markAllAsRead = async () => {
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from("notifications")
+          .update({ read: true })
+          .eq("user_id", user.id)
+          .eq("read", false);
+      }
+    } catch { /* ignore */ }
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
@@ -75,8 +120,9 @@ export function NotificationBell() {
                   key={notif.id}
                   href={notif.link || "/dashboard"}
                   onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-3 hover:bg-paper-warm transition ${!notif.read ? "bg-amber/5" : ""
-                    }`}
+                  className={`block px-4 py-3 hover:bg-paper-warm transition ${
+                    !notif.read ? "bg-amber/5" : ""
+                  }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className={`text-xs ${!notif.read ? "font-bold text-ink" : "font-semibold text-charcoal/80"}`}>
@@ -102,4 +148,3 @@ export function NotificationBell() {
     </div>
   );
 }
-
