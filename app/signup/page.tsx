@@ -142,7 +142,7 @@ export default function SignUpPage() {
             <Input
               label="Email Address"
               type="email"
-              placeholder="e.g. rahul@iitb.ac.in or rahul@college.edu"
+              placeholder="e.g. rahul@iitp.ac.in"
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
               error={errors.email}
@@ -167,7 +167,7 @@ export default function SignUpPage() {
 
           <Input
             label="College / University"
-            placeholder="e.g. IIT Bombay, Delhi University"
+            placeholder="e.g. IIT Patna"
             value={college}
             onChange={(e) => setCollege(e.target.value)}
             error={errors.college}
