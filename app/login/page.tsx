@@ -131,47 +131,7 @@ function LoginForm() {
         </Button>
       </form>
 
-      {/* Demo Credentials Quick-Fill */}
-      <div className="p-3 bg-paper-warm rounded-xl border border-paper-border space-y-2 text-xs">
-        <span className="font-bold text-charcoal flex items-center gap-1.5">
-          <Shield className="w-3.5 h-3.5 text-amber" />
-          Quick Test Accounts:
-        </span>
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          <button
-            type="button"
-            onClick={() => {
-              setEmail("admin@campusshare.internal");
-              setPassword("AdminPass123!");
-            }}
-            className="px-2.5 py-1.5 min-h-[36px] bg-white hover:bg-paper-border/40 border border-paper-border rounded-lg text-ink font-semibold transition active:scale-95"
-          >
-            Admin Demo
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail("rahul@iitb.ac.in");
-              setPassword("StudentPass123!");
-            }}
-            className="px-2.5 py-1.5 min-h-[36px] bg-white hover:bg-paper-border/40 border border-paper-border rounded-lg text-ink font-semibold transition active:scale-95"
-          >
-            Rahul (IITB)
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail("ananya@du.ac.in");
-              setPassword("StudentPass123!");
-            }}
-            className="px-2.5 py-1.5 min-h-[36px] bg-white hover:bg-paper-border/40 border border-paper-border rounded-lg text-ink font-semibold transition active:scale-95"
-          >
-            Ananya (DU)
-          </button>
-        </div>
-      </div>
 
-      {/* Footer */}
       <div className="text-center pt-2 border-t border-paper-border text-xs text-charcoal/70">
         Don't have an account yet?{" "}
         <Link href="/signup" className="font-bold text-ink hover:underline">
